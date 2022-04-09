@@ -1,30 +1,17 @@
-import React from "react";
-import { DrizzleContext } from "@drizzle/react-plugin";
-import { Drizzle } from "@drizzle/store";
-import drizzleOptions from "./drizzleOptions";
-import MyComponent from "./MyComponent";
-import "./App.css";
+import React from 'react'
+import 'bootstrap/dist/css/bootstrap.min.css'
+import Header from './components/Header/Header'
+import Mint from './components/Mint/Mint'
 
-const drizzle = new Drizzle(drizzleOptions);
-
-const App = () => {
+function App() {
   return (
-    <DrizzleContext.Provider drizzle={drizzle}>
-      <DrizzleContext.Consumer>
-        {drizzleContext => {
-          const { drizzle, drizzleState, initialized } = drizzleContext;
-
-          if (!initialized) {
-            return "Loading..."
-          }
-
-          return (
-            <MyComponent drizzle={drizzle} drizzleState={drizzleState} />
-          )
-        }}
-      </DrizzleContext.Consumer>
-    </DrizzleContext.Provider>
-  );
+    <div className="App">
+      <header className="App-header">
+        <Header />
+        <Mint />
+      </header>
+    </div>  
+  )
 }
 
 export default App;

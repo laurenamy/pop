@@ -8,17 +8,25 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract ItemToken is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    mapping(address => uint256) public userToken;
 
     constructor() ERC721("GameItem", "ITM") {}
 
-    function mintItem(address player, string memory tokenUri)
+    function mintItem(string memory tokenUri)
         public
-        returns (uint256 newId)
     {
         _tokenIds.increment();
 
-        newId = _tokenIds.current();
-        _mint(player, newId);
+        uint256 newId = _tokenIds.current();
+        userToken[msg.sender] = newId;
+        _safeMint(msg.sender, newId);
         _setTokenURI(newId, tokenUri);
+    }
+
+    function transfer(address newOwner) public {
+        uint256 id = userToken[msg.sender];
+        safeTransferFrom(msg.sender, newOwner, id);
+        delete userToken[msg.sender];
+        userToken[newOwner] = id;
     }
 }
